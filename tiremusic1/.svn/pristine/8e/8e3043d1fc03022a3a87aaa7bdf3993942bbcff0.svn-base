@@ -1,0 +1,21 @@
+package com.chinasofti.blc.tiremusic.test;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.chinasofti.blc.tiremusic.common.controller.BaseController;
+
+@WebServlet("/test/*")
+public class TestController extends BaseController {
+
+	private static final long serialVersionUID = 1L;
+
+	public void testReq(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		System.out.println("请求测试成功！");
+		resp.sendRedirect("https://www.baidu.com/");
+	}
+}

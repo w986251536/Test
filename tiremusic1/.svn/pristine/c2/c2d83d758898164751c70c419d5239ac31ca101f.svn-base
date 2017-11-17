@@ -1,0 +1,100 @@
+package com.chinasofti.blc.tiremusic.songlist.service;
+
+import java.util.List;
+
+import com.chinasofti.blc.tiremusic.songlist.dao.SongListDao;
+import com.chinasofti.blc.tiremusic.songlist.entity.SongList;
+
+/**
+ * 歌单服务层
+ * 
+ * @author guowh
+ *
+ */
+public class SongListService {
+	SongListDao songListDao = new SongListDao();
+
+	/**
+	 * 增加歌单
+	 * 
+	 * @param name
+	 *            歌单名称
+	 * @param uid
+	 *            用户id
+	 * @return 成功返回字符串true，失败返回错误信息
+	 */
+	public String addSongList(String name, int uid) {
+		if (name == null || name.trim().isEmpty()) {
+			return "歌单名称不能为空！";
+		} else if (isInList(name, songListDao.queryAllListByUid(uid))) {
+			return "歌单名称重复！";
+		} else if (songListDao.addSongList(name.trim(), uid)) {
+			return "true";
+		} else {
+			return "服务器错误，请稍后再试！";
+		}
+	}
+
+	/**
+	 * 根据用户id查找歌单
+	 * 
+	 * @param uid
+	 *            用户id
+	 * @return 歌单集合
+	 */
+	public List<SongList> queryAllListByUid(int uid) {
+		return songListDao.queryAllListByUid(uid);
+	}
+
+	/**
+	 * 根据歌单id删除歌单
+	 * 
+	 * @param lid
+	 *            歌单id
+	 * @return 删除成功返回true
+	 */
+	public boolean deleteSongListByLid(int lid) {
+		return songListDao.deleteSongListByLid(lid);
+	}
+
+	/**
+	 * 修改歌单名称
+	 * 
+	 * @param lid
+	 *            歌单id
+	 * @param name
+	 *            歌单名称
+	 * @param uid
+	 *            用户Id
+	 * @return 成功返回字符串true，失败返回错误信息
+	 */
+	public String updateSongListByLid(int lid, String name, int uid) {
+		if (name == null || name.trim().isEmpty()) {
+			return "歌单名称不能为空！";
+		} else if (isInList(name, songListDao.queryAllListByUid(uid))) {
+			return "歌单名称重复！";
+		} else if (songListDao.updateSongListByLid(lid, name)) {
+			return "true";
+		} else {
+			return "服务器错误，请稍后再试！";
+		}
+	}
+
+	/**
+	 * 判断歌单是否已存在
+	 * 
+	 * @param name
+	 *            要增加的歌单名称
+	 * @param list
+	 *            歌单列表
+	 * @return
+	 */
+	public boolean isInList(String name, List<SongList> list) {
+		for (SongList songList : list) {
+			if (songList.getSonglistname().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
