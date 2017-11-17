@@ -1,0 +1,27 @@
+package com.chinasofti.blc.tiremusic.userManage.service;
+
+import java.util.List;
+
+import com.chinasofti.blc.tiremusic.userManage.dao.UserManageDao;
+import com.chinasofti.blc.tiremusic.userManage.entity.User;
+
+public class UserManageService {
+	UserManageDao userManageDao = new UserManageDao();
+	
+	/**
+	 * 查询上传不良信息超过5次的用户
+	 * @return
+	 */
+	public List<User> showUser(){
+		return userManageDao.showUser();
+	}
+	
+	/**
+	 * 用户状态更新
+	 * @param uid
+	 * @return
+	 */
+	public boolean updateUserState(int uid) {
+		return userManageDao.updateUserState(uid);
+	}
+}

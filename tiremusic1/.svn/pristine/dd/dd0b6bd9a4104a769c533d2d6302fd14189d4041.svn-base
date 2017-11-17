@@ -1,0 +1,61 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%
+	String basepath = request.getContextPath();
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>用户状态</title>
+<link rel="stylesheet" type="text/css" href="<%=basepath %>/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="<%=basepath %>/easyui/themes/icon.css">
+</head>
+<body>
+
+	<table id="dg"></table>  
+	
+	<script type="text/javascript" src="<%=basepath %>/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="<%=basepath %>/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="<%=basepath %>/easyui/locale/easyui-lang-zh_CN.js"></script> 
+	<script type="text/javascript">
+	$('#dg').datagrid({    
+	    url:'', 
+	    rownumbers:true,
+	    pagination:true,
+	    height:460,
+	    toolbar: [{
+    		iconCls: 'icon-remove',
+    		text:'禁用',
+    		handler: function(){
+    			var row = $('#dg').datagrid('getSelections');
+    			if(row==null){
+    				$.messager.alert('警告','请先选择一行');
+    				return null;
+    			}
+    			var uid = row.uid;
+    			var nodes = $('#dg').datagrid('getChecked');
+    			var mids = [];
+    			for(var i = 0 ; i < nodes.length ; i ++){
+    				mids[i] = nodes[i].mid;
+    			}
+    			$.post('<%=basepath %>/manage/updateUserState.do',{uid:uid,mids:midStr},function(data){
+    				if(data=='true'){
+    					$.messager.alert('警告','禁用成功！');
+    				}else{
+    					$.messager.alert('警告','禁用失败');
+    				}
+    			},'text');
+    		}
+    	}],
+	    columns:[[    
+	    	{field:'',title:'',width:100, checkbox:true},
+	        {field:'code',title:'用户ID',width:100},    
+	        {field:'name',title:'用户名',width:100},    
+	        {field:'price',title:'用户状态',width:100}    
+	    ]]    
+	}); 
+		
+	</script>
+</body>
+</html>
